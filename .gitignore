@@ -1,0 +1,18 @@
+# Vagrant
+.vagrant/
+*.log
+
+# K3s join token (auto-generated, never commit secrets)
+**/token
+
+# Kubernetes local kubeconfig dumps
+**/kubeconfig
+*.kubeconfig
+
+# OS / editor junk
+.DS_Store
+*.swp
+*.swo
+
+# k3d / docker
+.k3d/

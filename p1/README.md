@@ -28,12 +28,12 @@ separate install needed.
 ## Architecture
 
 ```
-┌─────────────────────┐        join token via         ┌──────────────────────┐
+┌───────────────────────┐        join token via         ┌────────────────────────┐
 │   anmakaroS           │      shared /vagrant folder   │   anmakaroSW           │
-│   192.168.56.110       │ ─────────────────────────────▶│   192.168.56.111       │
-│   K3s server             │                            │   K3s agent              │
-│   (control-plane)        │◀─────────────────────────────│   (worker node)          │
-└─────────────────────┘        joins via :6443           └──────────────────────┘
+│   192.168.56.110      │ ─────────────────────────────▶│   192.168.56.111       │
+│   K3s server          │                               │   K3s agent            │
+│   (control-plane)     │◀──────────────────────────────│   (worker node)        │
+└───────────────────────┘        joins via :6443        └────────────────────────┘
 ```
 
 The join token is never copied by hand — both VMs mount the same project

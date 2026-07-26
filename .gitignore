@@ -16,3 +16,6 @@
 
 # k3d / docker
 .k3d/
+.vagrant/
+*.token
+token

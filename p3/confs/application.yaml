@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/Sombru/IoT.git
-    targetRevision: p3_mmakagon
+    targetRevision: main
     path: p3/confs/app
   destination:
     server: https://kubernetes.default.svc

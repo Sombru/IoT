@@ -9,6 +9,7 @@ chmod +x "$SCRIPT_DIR"/*.sh
 "$SCRIPT_DIR/install_docker.sh"
 "$SCRIPT_DIR/install_kubectl.sh"
 "$SCRIPT_DIR/install_k3d.sh"
+"$SCRIPT_DIR/install_k3s.sh"
 "$SCRIPT_DIR/install_helm.sh"
 "$SCRIPT_DIR/install_argocd.sh"
 

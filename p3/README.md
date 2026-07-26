@@ -129,6 +129,25 @@ argocd app get mmakagon-app
 argocd app sync mmakagon-app
 ```
 
+### 7b. Understanding sync status right after apply
+
+```bash
+kubectl get application mmakagon-app -n argocd
+```
+
+Right after `kubectl apply -f p3/confs/application.yaml`, `SYNC STATUS` may show
+`Unknown` for a minute while the controller does its first refresh — this is
+normal and different from `OutOfSync`. `HEALTH STATUS: Healthy` already means
+the pod is running fine. If `Unknown` persists more than a couple of minutes,
+force a refresh:
+
+```bash
+kubectl -n argocd annotate application mmakagon-app \
+  argocd.argoproj.io/refresh=hard --overwrite
+
+kubectl get application mmakagon-app -n argocd
+```
+
 ### 8. Applying the Application manifest
 
 ```bash

@@ -1,21 +1,18 @@
 #!/bin/bash
-set -euo pipefail
+set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFS_DIR="$(cd "${SCRIPT_DIR}/../confs" && pwd)"
+CONFS_DIR="$SCRIPT_DIR/../confs"
 
-echo ">>> Applying namespaces..."
-kubectl apply -f "${CONFS_DIR}/namespaces.yaml"
+kubectl apply -f "$CONFS_DIR/namespaces.yaml"
 
-echo ">>> Installing Argo CD into namespace 'argocd'..."
-kubectl apply -n argocd --server-side --force-conflicts \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-echo ">>> Waiting for Argo CD server to be Ready (this can take a couple of minutes)..."
-kubectl wait --for=condition=Available deployment/argocd-server -n argocd --timeout=300s
+kubectl wait --for=condition=Available --timeout=300s deployment/argocd-server -n argocd
+kubectl wait --for=condition=Available --timeout=300s deployment/argocd-repo-server -n argocd
 
-echo ">>> Argo CD is up."
-echo ">>> Initial admin password:"
+kubectl apply -f "$CONFS_DIR/application.yaml"
+
+echo "admin"
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-echo
-echo ">>> To access the UI: kubectl port-forward svc/argocd-server -n argocd 8080:443"
+echo ""

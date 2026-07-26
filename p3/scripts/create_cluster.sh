@@ -1,17 +1,16 @@
 #!/bin/bash
-set -euo pipefail
+set -e
 
-CLUSTER_NAME="iot-cluster"
+CLUSTER_NAME="mmakagonS"
 
-if k3d cluster list | grep -q "^${CLUSTER_NAME}"; then
-    echo ">>> Cluster '${CLUSTER_NAME}' already exists, skipping creation."
-else
-    echo ">>> Creating k3d cluster '${CLUSTER_NAME}'..."
-    k3d cluster create "${CLUSTER_NAME}" -p "8888:8888@loadbalancer"
+if k3d cluster list | grep -q "$CLUSTER_NAME"; then
+    k3d cluster delete "$CLUSTER_NAME"
 fi
 
-echo ">>> Waiting for nodes to be Ready..."
-kubectl wait --for=condition=Ready nodes --all --timeout=120s
+k3d cluster create "$CLUSTER_NAME" \
+    --servers 1 \
+    --agents 0 \
+    -p "8888:8888@loadbalancer"
 
-kubectl get nodes -o wide
-echo ">>> Cluster is up."
+kubectl cluster-info
+kubectl get nodes

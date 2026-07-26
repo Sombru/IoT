@@ -1,23 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: playground
+  name: mmakagon-app
   namespace: argocd
 spec:
   project: default
-
   source:
-    repoURL: https://github.com/OnnaMcadva/Inception_Of_Things.git
+    repoURL: https://github.com/Sombru/IoT.git
     targetRevision: main
-    path: p3/app
-
+    path: p3/confs/app
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=false

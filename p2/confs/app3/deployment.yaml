@@ -15,7 +15,7 @@ spec:
         app: app3
     spec:
       containers:
-        - name: app3
-          image: nginx:stable-alpine
+          image: app1:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 80

@@ -15,6 +15,7 @@ spec:
         app: app3
     spec:
       containers:
+        - name: app1
           image: app1:latest
           imagePullPolicy: Never
           ports:

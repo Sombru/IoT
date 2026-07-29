@@ -17,5 +17,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder ".", "/home/vagrant/project"
 
+  config.vm.provision "shell", path: "scripts/install_nerdctl.sh"
+  config.vm.provision "shell", path: "scripts/install_k3s.sh"
+
   config.vm.provision "shell", path: "scripts/provision.sh"
 end

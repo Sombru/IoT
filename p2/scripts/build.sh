@@ -1,18 +1,22 @@
 #!/bin/bash
 set -e
 
-sudo nerdctl --namespace k8s.io images
+PROJECT_DIR=/home/vagrant/project
 
-if ! sudo nerdctl image inspect app1:latest >/dev/null 2>&1; then
-    sudo nerdctl build -t app1:latest ./confs/app1
-fi
+export CONTAINERD_ADDRESS=/run/k3s/containerd/containerd.sock
+export CONTAINERD_NAMESPACE=k8s.io
 
-if ! sudo nerdctl image inspect app2:latest >/dev/null 2>&1; then
-    sudo nerdctl build -t app2:latest ./confs/app2
-fi
+cd "$PROJECT_DIR"
 
-if ! sudo nerdctl image inspect app3:latest >/dev/null 2>&1; then
-    sudo nerdctl build -t app3:latest ./confs/app3
-fi
+sudo -E nerdctl images
 
-sudo nerdctl images
+for app in app1 app2 app3; do
+    if ! sudo -E nerdctl image inspect "${app}:latest" >/dev/null 2>&1; then
+        echo "Building ${app}..."
+        sudo -E nerdctl build \
+            -t "${app}:latest" \
+            "$PROJECT_DIR/confs/${app}"
+    fi
+done
+
+sudo -E nerdctl images

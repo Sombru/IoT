@@ -1,1 +1,1 @@
-{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/osboxes/IoT/p2","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/home/vagrant/project":{"guestpath":"/home/vagrant/project","hostpath":"/home/osboxes/IoT/p2","disabled":false,"__vagrantfile":true}}}

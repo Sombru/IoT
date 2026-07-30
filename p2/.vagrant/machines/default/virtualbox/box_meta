@@ -1,1 +1,1 @@
-{"name":"ubuntu/trusty64","version":"20191107.0.0","provider":"virtualbox","directory":"boxes/ubuntu-VAGRANTSLASH-trusty64/20191107.0.0/virtualbox"}
+{"name":"ubuntu/jammy64","version":"20241002.0.0","provider":"virtualbox","directory":"boxes/ubuntu-VAGRANTSLASH-jammy64/20241002.0.0/virtualbox"}

@@ -20,7 +20,7 @@ p3/
 │   ├── namespaces.yaml       # argocd + dev namespaces
 │   ├── application.yaml      # Argo CD Application pointing at this repo
 │   └── app/
-│       ├── deployment.yaml   # wil42/playground deployment
+│       ├── deployment.yaml   # onnamcadva/cat-app deployment
 │       └── service.yaml      # LoadBalancer service, port 8888
 └── scripts/
     ├── create_cluster.sh     # creates the k3d cluster
@@ -163,25 +163,53 @@ kubectl get svc -n dev
 kubectl describe application mmakagon-app -n argocd
 
 curl http://localhost:8888/
-# Expected: {"status":"ok", "message": "v1"}
+# Expected: {"status":"ok","message":"v1","cat":"🐱","sound":"meow"}
 ```
 
 ### 10. Switching the app version (v1 → v2)
 
+The app used in `p3/confs/app/deployment.yaml` is `onnamcadva/cat-app`, a small
+Flask app that returns a JSON payload with a cat emoji. v1 and v2 differ in the
+`message`, `cat`, and `sound` fields.
+
 ```bash
-sed -i 's/wil42\/playground:v1/wil42\/playground:v2/g' p3/confs/app/deployment.yaml
+cd ~/IoT
+
+sed -i 's/onnamcadva\/cat-app:v1/onnamcadva\/cat-app:v2/g' p3/confs/app/deployment.yaml
 
 git add p3/confs/app/deployment.yaml
-git commit -m "bump playground to v2"
-git push
+git commit -m "bump to v2"
+git push origin main
 
-# Argo CD auto-syncs (selfHeal + automated). To force it immediately:
-kubectl patch application mmakagon-app -n argocd \
-  --type merge -p '{"operation":{"sync":{}}}'
+# Argo CD auto-syncs (selfHeal + automated), but during the defense it's
+# safer to force an immediate refresh instead of waiting:
+kubectl -n argocd annotate application mmakagon-app \
+  argocd.argoproj.io/refresh=hard --overwrite
 
-# Verify
+sleep 15
+kubectl get pods -n dev
 curl http://localhost:8888/
-# Expected: {"status":"ok", "message": "v2"}
+# Expected: {"status":"ok","message":"v2","cat":"😻","sound":"purr"}
+```
+
+### 10b. Rolling back v2 → v1
+
+```bash
+cd ~/IoT
+
+sed -i 's/onnamcadva\/cat-app:v2/onnamcadva\/cat-app:v1/g' p3/confs/app/deployment.yaml
+
+git add p3/confs/app/deployment.yaml
+git commit -m "rollback to v1"
+git push origin main
+
+kubectl -n argocd annotate application mmakagon-app \
+  argocd.argoproj.io/refresh=hard --overwrite
+
+sleep 15
+kubectl get pods -n dev
+curl http://localhost:8888/
+# Expected: {"status":"ok","message":"v1","cat":"🐱","sound":"meow"}
 ```
 
 ### 11. Useful debugging commands

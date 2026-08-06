@@ -13,6 +13,7 @@ for app in app1 app2 app3; do
     if ! sudo -E nerdctl image inspect "${app}:latest" >/dev/null 2>&1; then
         echo "Building ${app}..."
         sudo -E nerdctl build \
+            # --no-cache \
             -t "${app}:latest" \
             "confs/${app}"
     fi

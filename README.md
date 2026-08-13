@@ -98,10 +98,3 @@ Repository pointers
 - `p2/Vagrantfile`, `p2/confs/`, `p2/scripts/` — single-node apps + ingress
 - `p3/confs/`, `p3/scripts/` — extras and ArgoCD helpers
 
-If you want, I can now:
-- run a verification pass (bring up `p1` or `p2` and collect `kubectl` outputs),
-  or
-- revert any of my debug edits and produce a minimal, stable `p2` that uses
-  ConfigMaps + `nginx` only (no image builds) for submission.
-
-File reference: [IoT/README.md](IoT/README.md)
